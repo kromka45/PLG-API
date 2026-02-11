@@ -2,6 +2,7 @@ services:
   api:
     build:
       context: ..
+      dockerfile: Backend-Server/Dockerfile
     container_name: plg-api
     env_file:
       - .env

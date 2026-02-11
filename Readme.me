@@ -1,0 +1,27 @@
+# PLG-API — Read-only Django REST API (BIG PostgreSQL DB)
+
+This project exposes a **read-only** Django REST API endpoint that queries a **large PostgreSQL database** (on the same server) and returns records **only when filtered by** `external_player_id`.
+
+The API is intentionally restricted to **GET** requests (no create/update/delete).
+
+---
+
+## Features
+
+- Django + Django REST Framework
+- Connects to a separate PostgreSQL database alias (e.g. `big`)
+- Unmanaged models (`managed = False`) so Django does **not** migrate the BIG database
+- Read-only endpoint
+- **Required** query parameter: `external_player_id` (exact match)
+
+---
+
+## Requirements
+
+- Python 3.14+
+- PostgreSQL reachable from the app server
+- A PostgreSQL **read-only** user for the BIG database is strongly recommended
+
+---
+
+## Setup (virtualenv + pip)

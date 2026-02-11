@@ -4,7 +4,7 @@ from .models import LocalPlayer
 
 @admin.register(LocalPlayer)
 class LocalPlayerAdmin(admin.ModelAdmin):
-    list_display = ("bohemia_id", "synced_at")
-    search_fields = ("bohemia_id",)
+    list_display = ("killer_bi_id", "synced_at")
+    search_fields = ("killer_bi_id",)
 
 

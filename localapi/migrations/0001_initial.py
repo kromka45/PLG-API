@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='LocalPlayer',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bohemia_id', models.CharField(db_index=True, max_length=64, unique=True)),
+                ('killer_bi_id', models.CharField(db_index=True, max_length=64, unique=True)),
                 ('big_payload', models.JSONField(blank=True, default=dict)),
                 ('synced_at', models.DateTimeField(auto_now=True)),
             ],

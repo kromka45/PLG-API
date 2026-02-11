@@ -9,7 +9,7 @@ from localapi.models import LocalPlayer
 
 class PlayerSyncViewSet(viewsets.ViewSet):
     """
-    GET /players/sync/?bohemia_id=XYZ
+    GET /players/sync/?killer_bi_id=XYZ
     - reads PlayerRecord from BIG (Postgres)
     - upserts LocalPlayer in SQLite
     - returns the SQLite record (with cached big_payload)
@@ -17,9 +17,9 @@ class PlayerSyncViewSet(viewsets.ViewSet):
 
     @action(detail=False, methods=["get"], url_path="sync")
     def sync(self, request):
-        bohemia_id = request.query_params.get("bohemia_id")
+        bohemia_id = request.query_params.get("killer_bi_id")
         if not bohemia_id:
-            return Response({"detail": "bohemia_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"detail": "killer_bi_id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         # read from BIG database
         big_row = (

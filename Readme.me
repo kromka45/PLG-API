@@ -3,7 +3,7 @@
 This project provides **read-only** endpoints using Django REST Framework that:
 - use **SQLite** as a small local database (for app data/cache),
 - also connect to a **large PostgreSQL database** (alias `big`) within the same private network,
-- fetch data from the BIG DB by **`bohemia_id`** and can store/update selected fields in SQLite.
+- fetch data from the BIG DB by **`killer_bi_id`** and can store/update selected fields in SQLite.
 
 The API is intentionally limited to **GET** requests (no create/update/delete on the BIG DB).
 
@@ -16,10 +16,11 @@ The API is intentionally limited to **GET** requests (no create/update/delete on
   - `default` → SQLite (`db.sqlite3`)
   - `big` → PostgreSQL (read-only user recommended)
 - BIG DB models are **not migrated** (`managed = False`) — Django won’t modify the big database schema
-- Integration via **`bohemia_id`**
+- Integration via **`killer_bi_id`**
 - Optional caching/persisting of selected BIG DB fields into SQLite
 
 ---
+
 
 ## Requirements
 

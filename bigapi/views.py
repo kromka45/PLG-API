@@ -1,19 +1,40 @@
-from rest_framework.viewsets import ReadOnlyModelViewSet
-from rest_framework.exceptions import ValidationError
+from rest_framework import status, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .models import PlayerRecord
-from .serializers import PlayerRecordSerializer
+from .serializers import LocalPlayerSerializer
+from localapi.models import LocalPlayer
 
 
-class PlayerRecordViewSet(ReadOnlyModelViewSet):
-    serializer_class = PlayerRecordSerializer
+class PlayerSyncViewSet(viewsets.ViewSet):
+    """
+    GET /players/sync/?bohemia_id=XYZ
+    - reads PlayerRecord from BIG (Postgres)
+    - upserts LocalPlayer in SQLite
+    - returns the SQLite record (with cached big_payload)
+    """
 
-    def get_queryset(self):
-        external_player_id = self.request.query_params.get("external_player_id")
-        if not external_player_id:
-            raise ValidationError(
-                {"external_player_id": "This query parameter is required."}
-            )
+    @action(detail=False, methods=["get"], url_path="sync")
+    def sync(self, request):
+        bohemia_id = request.query_params.get("bohemia_id")
+        if not bohemia_id:
+            return Response({"detail": "bohemia_id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Exact match only:
-        return PlayerRecord.objects.filter(external_player_id=external_player_id)
+        # read from BIG database
+        big_row = (
+            PlayerRecord.objects.using("big")
+            .filter(bohemia_id=bohemia_id)
+            .values()
+            .first()
+        )
+        if not big_row:
+            return Response({"detail": "Not found in big database"}, status=status.HTTP_404_NOT_FOUND)
+
+        # upsert into SQLite (default)
+        obj, _created = LocalPlayer.objects.update_or_create(
+            bohemia_id=bohemia_id,
+            defaults={"big_payload": big_row},
+        )
+
+        return Response(LocalPlayerSerializer(obj).data, status=status.HTTP_200_OK)

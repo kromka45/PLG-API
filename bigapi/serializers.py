@@ -1,8 +1,8 @@
 from rest_framework import serializers
-from .models import PlayerRecord
+from localapi.models import LocalPlayer
 
 
-class PlayerRecordSerializer(serializers.ModelSerializer):
+class LocalPlayerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = PlayerRecord
-        fields = ["external_player_id"]  # add other allowed fields here
+        model = LocalPlayer
+        fields = ["bohemia_id", "big_payload", "synced_at"]

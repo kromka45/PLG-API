@@ -1,7 +1,7 @@
 from rest_framework.routers import DefaultRouter
-from .views import PlayerRecordViewSet
+from .views import PlayerSyncViewSet
 
 router = DefaultRouter()
-router.register(r"players", PlayerRecordViewSet, basename="players")
+router.register(r"players", PlayerSyncViewSet, basename="players")
 
 urlpatterns = router.urls

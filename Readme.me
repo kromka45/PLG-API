@@ -2,8 +2,20 @@
 
 This project provides a **read-only** endpoint that:
 - uses **SQLite** as a local cache database,
-- fetches player data from an **external API** available in the same network (often `localhost`),
-- caches responses by **`killer_bi_id`** and serves cached data while it is still fresh.
+- fetches player data from an external API available in the same network,
+- caches results by **`killer_bi_id`** in SQLite **only when a match is found**.
+
+The API is protected with an API key.
+## API Key
+
+This API is protected with an API key.
+
+- Header name: `X-API-Key`
+- Configure the key via `.env`:
+  - `API_KEY=...`
+
+Example request:
+
 
 The API is intentionally limited to **GET** requests.
 
@@ -35,6 +47,7 @@ The API is intentionally limited to **GET** requests.
 Example:
 dotenv DJANGO_DEBUG=1 API_PORT=9600
 EXTERNAL_API_BASE_URL=http://127.0.0.1:8000
+API_KEY=change_me_to_a_long_random_value
 EXTERNAL_API_TIMEOUT_SECONDS=5
 CACHE_TTL_SECONDS=3600
 

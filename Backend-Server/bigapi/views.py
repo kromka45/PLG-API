@@ -32,11 +32,19 @@ class PlayerCacheAPIView(APIView):
         if not killer_bi_id:
             return Response({"detail": "killer_bi_id is required"}, status=status.HTTP_400_BAD_REQUEST)
 
+        nick = request.query_params.get("nick")
+        if nick is not None:
+            nick = nick.strip() or None
+
         ttl = int(os.environ.get("CACHE_TTL_SECONDS", "3600"))
         now = int(time.time())
 
         cached = LocalPlayer.objects.filter(killer_bi_id=killer_bi_id).first()
         if cached and cached.big_payload:
+            if nick is not None and cached.nick != nick:
+                cached.nick = nick
+                cached.save(update_fields=["nick"])
+
             synced_at_ts = int(cached.synced_at.timestamp())
             if now - synced_at_ts <= ttl:
                 return Response(LocalPlayerSerializer(cached).data, status=status.HTTP_200_OK)
@@ -91,6 +99,9 @@ class PlayerCacheAPIView(APIView):
 
         obj, _created = LocalPlayer.objects.update_or_create(
             killer_bi_id=killer_bi_id,
-            defaults={"big_payload": matched},
+            defaults={
+                "big_payload": matched,
+                "nick": nick,
+            },
         )
         return Response(LocalPlayerSerializer(obj).data, status=status.HTTP_200_OK)

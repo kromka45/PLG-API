@@ -1,7 +1,6 @@
-from rest_framework.routers import DefaultRouter
-from .views import PlayerSyncViewSet
+from django.urls import path
+from .views import PlayerCacheAPIView
 
-router = DefaultRouter()
-router.register(r"players", PlayerSyncViewSet, basename="players")
-
-urlpatterns = router.urls
+urlpatterns = [
+    path("", PlayerCacheAPIView.as_view(), name="player-cache"),
+]

@@ -12,12 +12,9 @@ services:
       SQLITE_PATH: "/data/db.sqlite3"
       DJANGO_SECRET_KEY_FILE: "/data/django_secret_key"
 
-      BIG_DB_NAME: "${BIG_DB_NAME}"
-      BIG_DB_USER: "${BIG_DB_USER}"
-      BIG_DB_PASSWORD: "${BIG_DB_PASSWORD}"
-      BIG_DB_HOST: "${BIG_DB_HOST}"
-      BIG_DB_PORT: "${BIG_DB_PORT:-5432}"
-      BIG_DB_SSLMODE: "${BIG_DB_SSLMODE:-prefer}"
+      EXTERNAL_API_BASE_URL: "${EXTERNAL_API_BASE_URL}"
+      EXTERNAL_API_TIMEOUT_SECONDS: "${EXTERNAL_API_TIMEOUT_SECONDS:-5}"
+      CACHE_TTL_SECONDS: "${CACHE_TTL_SECONDS:-3600}"
     ports:
       - "${API_PORT:-9600}:9600"
     volumes:

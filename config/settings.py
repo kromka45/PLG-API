@@ -76,9 +76,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
-DATABASE_ROUTERS = [
-    "bigapi.db_router.BigDbRouter",
-]
+
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 50,
@@ -90,18 +88,8 @@ DATABASES = {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": os.environ.get("SQLITE_PATH", str(BASE_DIR / "db.sqlite3")),
     },
-    "big": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("BIG_DB_NAME", "big_database"),
-        "USER": os.environ.get("BIG_DB_USER", "big_ro_user"),
-        "PASSWORD": os.environ.get("BIG_DB_PASSWORD", ""),
-        "HOST": os.environ.get("BIG_DB_HOST", "127.0.0.1"),
-        "PORT": os.environ.get("BIG_DB_PORT", "5432"),
-        "OPTIONS": {
-            "sslmode": os.environ.get("BIG_DB_SSLMODE", "prefer"),
-        },
-    },
 }
+
 
 
 # Password validation

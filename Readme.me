@@ -1,61 +1,80 @@
-# PLG-API — Django REST API (SQLite + BIG PostgreSQL)
+# PLG-API — Django REST API (SQLite cache + External API)
 
-This project provides **read-only** endpoints using Django REST Framework that:
-- use **SQLite** as a small local database (for app data/cache),
-- also connect to a **large PostgreSQL database** (alias `big`) within the same private network,
-- fetch data from the BIG DB by **`killer_bi_id`** and can store/update selected fields in SQLite.
+This project provides a **read-only** endpoint that:
+- uses **SQLite** as a local cache database,
+- fetches player data from an **external API** available in the same network (often `localhost`),
+- caches responses by **`killer_bi_id`** and serves cached data while it is still fresh.
 
-The API is intentionally limited to **GET** requests (no create/update/delete on the BIG DB).
+The API is intentionally limited to **GET** requests.
 
 ---
 
 ## Features
 
 - Django + Django REST Framework
-- Two databases:
-  - `default` → SQLite (`db.sqlite3`)
-  - `big` → PostgreSQL (read-only user recommended)
-- BIG DB models are **not migrated** (`managed = False`) — Django won’t modify the big database schema
-- Integration via **`killer_bi_id`**
-- Optional caching/persisting of selected BIG DB fields into SQLite
+- **SQLite-only** storage (`default` database)
+- Integration key: **`killer_bi_id`**
+- External fetch:
+  - `GET {EXTERNAL_API_BASE_URL}/players?killer_bi_id=...`
+- Configurable cache TTL (`CACHE_TTL_SECONDS`)
+- Docker Compose setup
+- `DJANGO_SECRET_KEY` is auto-generated on first start (Docker) and persisted in a volume
 
 ---
-
 
 ## Requirements
 
 - Python 3.14+
-- PostgreSQL reachable from the API host/container (same private network; firewall allows only the API host)
-- A PostgreSQL **read-only** user for the BIG DB is strongly recommended
+- Docker + Docker Compose (recommended)
+- Network access to the external API (`EXTERNAL_API_BASE_URL`)
 
 ---
 
-## Run (Docker Compose)
+## Configuration (.env)
 
-1. Fill in the `.env` file (BIG DB credentials + API port).
-2. Start:
-   ```bash
-   docker compose up --build
-   ```
-3. The API listens on port `9600` by default (controlled by `API_PORT` in `.env`).
-
----
-
-## Migrations (SQLite)
-
-SQLite stores the app-side data (e.g., cache/mappings). To create tables:
+Example:
+dotenv DJANGO_DEBUG=1 API_PORT=9600
+EXTERNAL_API_BASE_URL=http://127.0.0.1:8000
+EXTERNAL_API_TIMEOUT_SECONDS=5
+CACHE_TTL_SECONDS=3600
 
 
 
-!!!!
-
+The API listens on port `9600` by default (controlled by `API_PORT`).
 
 ---
 
-## Security / networking notes
+## Endpoint
 
-- PostgreSQL should be reachable **only on the private network**
-- Open PostgreSQL port 5432 **only** to the API host private IP
-- Keep secrets and credentials in `.env` (do not commit it)
+Main endpoint:
+- `GET /api/?killer_bi_id=XYZ`
+
+Behavior:
+- If a fresh cached record exists in SQLite → returns it
+- Otherwise → calls the external API, stores the response in SQLite, then returns it
 
 ---
+
+## SQLite persistence (Docker)
+
+SQLite is stored under `/data/db.sqlite3` inside the container and persisted via a Docker volume.
+
+---
+
+## SECRET_KEY handling (Docker)
+
+If `DJANGO_SECRET_KEY` is not provided, the container entrypoint auto-generates it on first start and stores it here:
+- `/data/django_secret_key`
+
+The key remains stable across restarts as long as the Docker volume is kept.
+
+---
+
+## Production notes
+
+- Set `DJANGO_DEBUG=0` in production
+- Do not commit `.env` to git
+- Keep the external API private/internal if possible
+
+
+

@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="690d7698-0ad8-4023-8ed8-b2931e584333" name="Changes" comment="1.0 -&gt; API dla statystyk.wersja prealfa">
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+    <list default="true" id="690d7698-0ad8-4023-8ed8-b2931e584333" name="Changes" comment="0.1.2 - zmiana portu serwera na 9600">
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +76,15 @@
       <option name="project" value="LOCAL" />
       <updated>1770798534825</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="0.1.2 - zmiana portu serwera na 9600">
+      <option name="closed" value="true" />
+      <created>1770805747897</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1770805747897</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -94,6 +100,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="1.0 -&gt; API dla statystyk.wersja prealfa" />
-    <option name="LAST_COMMIT_MESSAGE" value="1.0 -&gt; API dla statystyk.wersja prealfa" />
+    <MESSAGE value="0.1.2 - zmiana portu serwera na 9600" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.1.2 - zmiana portu serwera na 9600" />
   </component>
 </project>

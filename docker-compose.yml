@@ -18,13 +18,13 @@ services:
       BIG_DB_PORT: "${BIG_DB_PORT:-5432}"
       BIG_DB_SSLMODE: "${BIG_DB_SSLMODE:-prefer}"
     ports:
-      - "${API_PORT:-8000}:8000"
+      - "${API_PORT:-9600}:9600"
     volumes:
       - sqlite_data:/data
     command: >
       sh -c "
       python manage.py migrate &&
-      python manage.py runserver 0.0.0.0:8000
+      python manage.py runserver 0.0.0.0:9600
       "
     restart: unless-stopped
 
